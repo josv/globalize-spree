@@ -1,3 +1,9 @@
+<script type="text/javascript" src="/javascripts/admin/tabber-minimized.js">
+</script>
+<link rel="stylesheet" href="/stylesheets/admin/example.css" TYPE="text/css" MEDIA="screen">
+<link rel="stylesheet" href="/stylesheets/admin/example-print.css" TYPE="text/css" MEDIA="print">
+
+
 <% if(Product.easy_accessors.blank?) %>
   <%= f.field_container :name do %>
     <%= f.label :name, t("name") %> <span class="required">*</span><br />
@@ -6,12 +12,18 @@
   <% end %>
 
 <% else %>
-  <%- Product.easy_accessors.each do |locale| %>
-    <% fieldsym = "name_#{locale}".to_sym %>
-    <%= f.field_container fieldsym do %>
-      <%= f.label fieldsym, t(fieldsym.to_s) %><br />
-      <%= f.text_field fieldsym, :class => 'fullwidth title'  %>
-      <%= f.error_message_on fieldsym %>
+  <%= content_tag :div, :class => "tabber" do %>
+    <%- Product.easy_accessors.each do |locale| %>
+        <% fieldsym = "name_#{locale}".to_sym %>
+ 
+        <%= content_tag :div, :class => "tabbertab", :title => locale.to_s.upcase do %>
+          <%= f.field_container fieldsym do %>
+            <%= f.label fieldsym, t("name") %><br />
+
+            <%= f.text_field fieldsym, :class => 'fullwidth title'  %>
+            <%= f.error_message_on fieldsym %>
+	  <% end %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
@@ -33,13 +45,17 @@
 
 <% else %>
   
-  <%- Product.easy_accessors.each do |locale| %>
-    <% fieldsym = "description_#{locale}".to_sym %>
-    <%= f.field_container fieldsym do %>
-      <%= f.label fieldsym, t(fieldsym.to_s)%><br />
-      <%= f.text_area fieldsym, {:cols => 60, :rows => 4, :class => 'fullwidth'} %>
-      <%= f.error_message_on fieldsym %>
-    <% end %>
+  <%= content_tag :div, :class => "tabber" do %>
+    <%- Product.easy_accessors.each do |locale| %>				    
+      <% fieldsym = "description_#{locale}".to_sym %>				    
+      <%= content_tag :div, :class => "tabbertab", :title => locale.to_s.upcase do %>
+        <%= f.field_container fieldsym do %>					    
+          <%= f.label fieldsym, t("description")%><br />			       	      
+          <%= f.text_area fieldsym, {:cols => 60, :rows => 4, :class => 'fullwidth'} %>
+          <%= f.error_message_on fieldsym %>					       	
+        <% end %>									    
+      <% end %>									    
+    <% end %>									    
   <% end %>
 
 <% end %>
